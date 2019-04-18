@@ -1,0 +1,2 @@
+call dein#load_toml(~/.config/nvim/z1ggy-o/dein/plugins.toml', {'lazy': 0}
+call dein#load_toml(~/.config/nvim/z1ggy-o/dein/plugins-lazy.toml', {'lazy': 1}
