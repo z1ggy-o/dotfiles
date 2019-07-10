@@ -2,76 +2,16 @@ if &compatible
       set nocompatible
 endif
 
-"Add the dein installation directory into runtimepath
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+set tags=./.tags;,.tags  " set ctags search path
 
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
-
-  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-  if !has('nvim')
-    call dein#add('roxma/nvim-yarp')
-    call dein#add('roxma/vim-hug-neovim-rpc')
-  endif
-    
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('wsdjeg/dein-ui.vim')  " Install UI
-  call dein#add('itchyny/lightline.vim')  " Status Line
-  call dein#add('mengelbrecht/lightline-bufferline')  " Top buffer
-  call dein#add('tpope/vim-surround')
-  call dein#add('deoplete-plugins/deoplete-jedi')  " Completion
-
-  call dein#add('/usr/local/opt/fzf')  " fzf vim-plugin
-  call dein#add('junegunn/fzf.vim')
-
-  call dein#add('morhetz/gruvbox')  " Colorscheme
-
-  let g:python3_host_prog = '/Users/zgy/.pyenv/versions/neovim3/bin/python'
-  let g:deoplete#enable_at_startup=1  " enable complement
-
-  call dein#end()
-  call dein#save_state()
-endif
-
-set termguicolors
-
-colorscheme gruvbox
-
-" >>>>> lightline and lightline-bufferline part <<<<<<<
-
-" Colorscheme of lightline
-let g:lightline = {
-    \ 'colorscheme': 'wombat',
-    \ 'tabline': {
-    \   'left': [['buffers']],
-    \   'right': [['close']],
-    \ },
-    \ 'component_expand':{
-    \   'buffers': 'lightline#bufferline#buffers'
-    \},
-    \ 'component_type': {
-    \    'buffers': 'tabsel'
-    \}
-\ }
-
-" Use TAB to insert the auto complete
-inoremap <silent><expr><TAB>
-    \ pumvisible()? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#manual_complete()
-
-" For true color
-if !has('gui_running')
-  set t_Co=256
-endif
-
-" >>>> Vim Build in Settings
-set encoding=utf-8
+" Set leader key to space bar
+let mapleader="\<Space>"
 
 filetype plugin indent on
 syntax enable                  " syntax highlight
 
 auto FileType make setlocal noexpandtab " do not use soft tab in MAKEFILE
+
 set nu                     " show row number
 set colorcolumn=80 " add line prompt
 highlight ColorColumn ctermbg=0
@@ -91,8 +31,8 @@ set laststatus=2  " Bottom  status bar
 set showtabline=2 " Top buffer line
 set relativenumber " relative line number
 
-set incsearch              " Highlighting while searching with / or ?
-set hlsearch               " Highlight matching objects
+"set incsearch              " Highlighting while searching with / or ?
+set nohlsearch               " Highlight matching objects
 
 set noshowmode             " lightline has provided this function
 
@@ -104,14 +44,4 @@ set splitright             " Open new windows right of  the current window
 
 set cursorline             " Find the current line quickly.
 
-" Put all temporary files under the same directory.
-" set backup
-" set backupdir     =$HOME/.vim/files/backup/
-" set backupext     =-vimbackup
-" set backupskip    =
-" set directory     =$HOME/.vim/files/swap//
-" set updatecount   =100
-" set undofile
-" set undodir       =$HOME/.vim/files/undo/
-"set viminfo       ='100,n$HOME/.vim/files/info/viminfo
-
+source ~/.config/nvim/plugins/vim-plug.vim
