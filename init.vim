@@ -3,6 +3,7 @@ if &compatible
 endif
 
 set tags=./.tags;,.tags  " set ctags search path
+nmap <F8> :TagbarToggle<CR>
 
 " Set leader key to space bar
 let mapleader="\<Space>"

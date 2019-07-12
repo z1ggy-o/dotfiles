@@ -6,6 +6,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-surround'
   Plug 'Yggdroot/indentLine'
   Plug 'jiangmiao/auto-pairs'
+  Plug 'majutsushi/tagbar'  " show function declear info
 
   Plug 'morhetz/gruvbox'  " Colorscheme
 
