@@ -1,0 +1,83 @@
+if &compatible
+      set nocompatible
+endif
+
+set tags=./.tags;,.tags  " set ctags search path
+
+" Set leader key to space bar
+let mapleader="\<Space>"
+
+filetype plugin indent on
+syntax enable                  " syntax highlight
+
+auto FileType make setlocal noexpandtab " do not use soft tab in MAKEFILE
+
+set colorcolumn=80 " add line prompt
+highlight ColorColumn ctermbg=0
+set textwidth=79
+
+"set autoindent
+set expandtab              " Use space to replace table
+set tabstop=4              " Table key's width
+set softtabstop=4          " Table's visual width, not the real one in file
+set shiftwidth=4           " Indent width when shift line
+set shiftround             " Indents to next multiple of 'shiftwidth'
+
+set backspace =indent,eol,start  " Make backspace work as you expect (?)
+set hidden                 " Switch between buffers without having to save first
+set showtabline=2 " Top buffer line
+
+"set incsearch              " Highlighting while searching with / or ?
+set nohlsearch               " Highlight matching objects
+
+set ttyfast                " Faster redrawing
+set lazyredraw             " Only redraw when necessary
+
+set splitbelow             " Open new windows below the current window
+set splitright             " Open new windows right of  the current window
+
+" General configuration options
+set noshowmode             " lightline has provided this function
+set autoread               " Automatically re-read file 
+
+" User Interface Options
+set laststatus=2           " Always display the status bar.
+set cursorline             " Find the current line quickly.
+set nu                     " show row number
+set relativenumber " relative line number
+set mouse=a " allow mouse in vim
+set title                  " Show file info at title
+set wildmenu               " Display command line's tab complete options as a menu
+
+" Search options
+set incsearch              " Increasing search
+set ignorecase             " Ignore case when searching
+set smartcase              " ... unless you type a capital
+
+" Text rendering options
+set linebreak              " wrap line at convenient line
+set scrolloff=3            " keep lines under cursor
+
+
+" Miscellaneous Options
+set confirm                " confirm when closing a unsaved file.
+set spell                  " spell checking
+
+" Swap and back file options - disable them all
+"set noswapfile
+set nobackup
+set nowb
+
+"Status line
+set statusline=%t          " tail of the filename
+"set statusline+=%{&ff}     " file format (EOL type)
+set statusline+=%h         " help file flag
+set statusline+=%m         " modified flag
+set statusline+=%r         " read only flag
+set statusline+=%y         " file type
+set statusline+=\ %c\          " cursor column
+set statusline+=\|\ %l/%L      " cursor line/total lines
+set statusline+=\ %P       " percent through file
+
+" make . to work with visually selected lines. Like in Normal mode.
+vnoremap . :normal.<CR>
