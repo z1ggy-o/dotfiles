@@ -63,8 +63,9 @@ There are two things you can do about this warning:
       :custom
       (org-roam-directory "~/Zettelkasten")
       :bind (:map org-roam-mode-map
-		  (("C-c n l" . org-roam)
+              (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
+               ("C-c n j" . org-roam-jump-to-index)
                ("C-c n b" . org-roam-switch-to-buffer)
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
@@ -78,13 +79,13 @@ There are two things you can do about this warning:
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
-  (deft-directory "~/Zettelkasten/"))
+  (deft-directory "~/org-roam-db/"))
 
 (use-package org-journal
   :custom
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir "~/Zettelkasten/")
+  (org-journal-dir "~/org-roam-db/")
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package evil
@@ -131,7 +132,7 @@ There are two things you can do about this warning:
 (set-face-attribute 'default nil :height 160)
 
 ;; Use Company plugin in all the mode
-(global-company-mode 1)
+;;(global-company-mode 1)
 
 ;; When highlighting some contents, new entry will substituts them like other editors do
 (delete-selection-mode 1)
@@ -172,3 +173,19 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(when (eq system-type 'windows-nt) ; when OS is macOS
+    (defun capture-from-win-clipboard()
+    (interactive)
+    (let* ((powershell "/mnt/c/Windows/System32\WindowsPowerShell/v1.0/powershell.exe")
+        (file-name (format-time-string "screenshot_%Y%m%d_%H%M%s.png"))
+        ;; (file-path-powershell (concat "c://User/\$env:USERNAME/" file-name))
+        (file-path-wsl (concat "/home/ziggy/imgs/" file-name))
+        )
+
+        (shell-command (concat "powershell.exe -command \"(Get-Clipboard -Format Image).Save(\\\"" file-path-wsl "\\\")\""))
+        (insert (concat "[[file:" file-path-wsl "]]"))
+        (org-display-inline-images)
+        ;;(shell-command (format "%s" mv-command))
+        ;;(rename-file (concat "/mnt/c/Users/Public/" file-name) file-path-wsl)
+        )))
