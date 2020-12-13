@@ -32,10 +32,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -67,12 +63,40 @@
           (call-process "okular" nil 0 nil fpath))))
  )
 
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+;;(setq org-directory "~/org/")
+
 ;; Some path variables
-(setq roam_notes "~/silverpath/org-roam-db/"
+(setq org-directory "~/silverpath/org/"
+      org-agenda-files (list "~/silverpath/org/" "\.org$")
+      org-archive-location (concat org-directory ".archive/%s::")
+      roam_notes "~/silverpath/org-roam-db/"
       lit_notes "~/silverpath/org-roam-db/literature/"
-      zot_bib "~/silverpath/org-roam-db/total_bib.bib"
-      paper_notes "~/silverpath/org-roam-db/research/paper_notes/"
+      zot_bib "~/silverpath/org-roam-db/zotero.bib"
+      paper_notes "~/silverpath/org-roam-db/paper_notes/"
       pdf_dir "~/silverpath/papers/")
+
+;;
+;; ORG PART
+;;
+;; for org-capture
+(setq org-default-notes-file (concat org-directory "inbox.org"))
+(after! org
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/silverpath/inbox.org" "Tasks")
+          "* TODO %?\n %i\n %a")
+          ("j" "Journal" entry (file+datetree "~/silverpath/org/journal.org")
+          "* %U
+** Today's Tasks
+** Process
+** Summary")
+          ("n" "Note" entry (file+headline "~/silverpath/org/inbox.org" "Notes")
+          "* %?\n%U\n%a\n")
+          ("r" "Research Tasks" entry (file+headline "~/silverpaht/inbox.org" "Research Related")
+          "* TODO %? \nLink: %a")
+          ))
+)
 
 ;;
 ;; ORG-ROAM PART
@@ -96,7 +120,7 @@
          :unnarrowed t)
         ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "literature/%<%y%m%d>-${slug}"
+         :file-name "literature/${slug}"
          :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
          :unnarrowed t)
         ("c" "concept" plain (function org-roam-capture--get-point)
@@ -230,7 +254,7 @@
         '(
           ("r" "ref + note" plain (function org-roam-capture--get-point)
            ""
-           :file-name "research/paper_notes/${=key=}"
+           :file-name "paper_notes/${=key=}"
            :head "#+TITLE: ${=key=}: ${title}
 #+ROAM_KEY: ${ref}
 
@@ -249,8 +273,6 @@
 ** What Is the Problem
 
 ** Why the Problem Is Interesting
-
-** The Idea
 
 ** The Idea
 
@@ -328,3 +350,6 @@
   ;;(define-key pdf-view-mode-map (kbd "u") #'pdf-annot-add-underline-markup-annotation)
   ;;(define-key pdf-view-mode-map (kbd "t") #'pdf-annot-add-text-annotation)
   ;;(define-key pdf-view-mode-map (kbd "d") #'pdf-annot-delete)
+
+;; for ccls
+(setq ccls-executable "/usr/local/bin/ccls")
