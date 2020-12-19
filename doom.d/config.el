@@ -163,8 +163,8 @@
 (use-package! org-ref
   :config
   ;; set the bibtex file for org-ref
-  (setq reftex-default-bibliography (list (concat roam_notes "total_bib.bib")
-                                  (concat roam_notes "my_books.bib")))
+  (setq reftex-default-bibliography (list (concat roam_notes "zotero.bib")
+                                  (concat roam_notes "calibre_books.bib")))
   ;; set notes, pdf directory
   (setq org-ref-bibligraphy-notes (concat lit_notes "bibnotes.org")
   org-ref-notes-directory paper_notes
@@ -188,8 +188,8 @@
   :commands helm-bibtex
   :config
   (setq
-   bibtex-completion-bibliography (list (concat roam_notes "total_bib.bib")
-                                      (concat roam_notes "my_books.bib"))
+   bibtex-completion-bibliography (list (concat roam_notes "zotero.bib")
+                                      (concat roam_notes "calibre_books.bib"))
    bibtex-completion-notes-path paper_notes
    bibtex-completion-library-path pdf_dir
    bibtex-completion-pdf-field "file"  ;; filed in bibtex to help find related pdf. optional
@@ -243,7 +243,7 @@
 ;;
 (use-package! org-roam-bibtex
   :after (org-roam)
-  :hook (org-roamodem-mode . org-roam-bibtex-mode)
+  :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
   ;; This may let us get the true contents of these keywords from bibtex
   ;;(setq org-roam-bibtex-preformat-keywords
