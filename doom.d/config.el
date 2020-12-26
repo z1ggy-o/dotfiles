@@ -96,7 +96,7 @@
           ("r" "Research Tasks" entry (file+headline "~/silverpaht/inbox.org" "Research Related")
           "* TODO %? \nLink: %a")
           ))
-)
+  (setq org-log-done t))
 
 ;;
 ;; ORG-ROAM PART
@@ -285,7 +285,7 @@
            :unnarrowed t)
           ("b" "book" plain (function org-roam-capture--get-point)
            ""
-           :file-name "outlines/${slug}"
+           :file-name "outlines/${=key=}"
            :head "#+TITLE: ${=key=}: ${title}
 #+ROAM_KEY: ${ref}
 
@@ -329,8 +329,8 @@
    )
   )
 
-;;
 ;; pdf-tools part
+;;
 ;;
 (use-package! pdf-tools
   :bind (:map pdf-view-mode-map
@@ -351,5 +351,36 @@
   ;;(define-key pdf-view-mode-map (kbd "t") #'pdf-annot-add-text-annotation)
   ;;(define-key pdf-view-mode-map (kbd "d") #'pdf-annot-delete)
 
+;;
 ;; for ccls
+;;
 (setq ccls-executable "/usr/local/bin/ccls")
+
+;;
+;; ox-hugo part
+;; Populates only the EXPORT_FILE_NAME property in the inserted headline.
+;;
+(with-eval-after-load 'org-capture
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("h"                ;`org-capture' binding + h
+                 "Hugo post"
+                 entry
+                 ;; It is assumed that below file is present in `org-directory'
+                 ;; and that it has a "Blog Ideas" heading. It can even be a
+                 ;; symlink pointing to the actual location of all-posts.org!
+                 (file+olp "blogs/inbox.org" "Blog Ideas")
+                 (function org-hugo-new-subtree-post-capture-template))))

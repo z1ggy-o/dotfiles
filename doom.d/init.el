@@ -82,7 +82,7 @@
        :checkers
        syntax              ; tasing you for every semicolon you forget
        spell             ; tasing you for misspelling mispelling
-       grammar           ; tasing grammar mistake every you make
+       ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
@@ -148,7 +148,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +roam +noter)               ; organize your plain life in plain text
+       (org +roam +noter +hugo)               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
