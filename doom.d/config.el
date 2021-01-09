@@ -63,6 +63,12 @@
           (call-process "okular" nil 0 nil fpath))))
  )
 
+;;
+;; EVIL PART
+;;
+;;(after! evil-snipe
+;;  (evil-snip-mode -1))
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 ;;(setq org-directory "~/org/")
@@ -108,7 +114,8 @@
   :init
   (setq org-roam-directory roam_notes
         org-roam-db-location "~/.org-roam.db"  ;; move it out of sync directory
-        org-roam-tag-sources '(prop last-directory))
+        org-roam-tag-sources '(prop last-directory)
+        org-roam-file-exclude-regexp "daily" )
   :config
   ;; org-roam templates
   (setq org-roam-capture-templates
