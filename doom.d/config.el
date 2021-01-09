@@ -155,6 +155,30 @@
 - source :: ${ref}"
          :immediate-finish t
          :unnarrowed t)))
+  ;;
+  ;; org-roam-daily
+  ;;
+  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-dailies-capture-templates
+        '(("r" "research" entry
+           #'org-roam-capture--get-point
+           "* %? [%<%H:%M:%S>]"
+           :file-name "daily/%<%Y-%m-%d>"
+           :head "#+title: %<%Y-%m-%d>\n"
+           :olp ("Research notes"))
+
+          ("j" "journal" entry
+           #'org-roam-capture--get-point
+           "* %? [%<%H:%M:%S>]"
+           :file-name "daily/%<%Y-%m-%d>"
+           :head "#+title: %<%Y-%m-%d>\n"
+           :olp ("Journal"))
+          ))
+
+  (map! :leader
+        (:prefix "n"
+         (:prefix "r"
+          :desc "Capture for today" "j" #'org-roam-dailies-capture-today)))
 )
 
 ;;
