@@ -66,8 +66,7 @@
 ;;
 ;; EVIL PART
 ;;
-;;(after! evil-snipe
-;;  (evil-snip-mode -1))
+(after! evil-snipe (evil-snipe-mode -1))  ;; s for substitution comes back!
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
