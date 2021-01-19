@@ -1,4 +1,4 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -74,7 +74,7 @@
 
 ;; Some path variables
 (setq org-directory "~/silverpath/org/"
-      org-agenda-files (list "~/silverpath/org/" "\.org$")
+      org-agenda-files (list "~/silverpath/org/" "\.org")
       org-archive-location (concat org-directory ".archive/%s::")
       roam_notes "~/silverpath/org-roam-db/"
       lit_notes "~/silverpath/org-roam-db/literature/"
@@ -102,6 +102,8 @@
           "* TODO %? \nLink: %a")
           ))
   (setq org-log-done t))
+
+(add-hook 'org-mode-hook #'auto-fill-mode)  ;; enable auto-fill in all org files
 
 ;;
 ;; ORG-ROAM PART
