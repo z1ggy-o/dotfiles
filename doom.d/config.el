@@ -63,6 +63,14 @@
           (call-process "okular" nil 0 nil fpath))))
  )
 
+;; Use command key as meta in macOS, that means we need to use Alt+C/V to copy/paste
+(cond
+ ((string-equal system-type "darwin")
+  (setq mac-option-modifier 'super
+        mac-command-modifier 'meta)
+  )
+ )
+
 ;;
 ;; EVIL PART
 ;;
@@ -88,6 +96,10 @@
 ;; for org-capture
 (setq org-default-notes-file (concat org-directory "inbox.org"))
 (after! org
+  ;; Fix `org-cycle' bug
+  (map! :map org-mode-map
+        :n "<tab>" 'org-cycle)
+
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/silverpath/inbox.org" "Tasks")
           "* TODO %?\n %i\n %a")
@@ -108,6 +120,9 @@
 ;;
 ;; ORG-ROAM PART
 ;;
+(require 'time-stamp)  ;; for automatically add time stamp in org files
+(add-hook 'write-file-functions 'time-stamp)
+
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam-switch-to-buffer org-roam)
   :hook
@@ -124,22 +139,22 @@
         ("i" "inbox" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "inbox/%<%y%m%d>-${slug}"
-         :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:\n\n- tags ::\n- source ::"
+         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::\n- source ::"
          :unnarrowed t)
         ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
          "%?"
          :file-name "literature/${slug}"
-         :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
+         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
          :unnarrowed t)
         ("c" "concept" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "concept/${slug}"
-         :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
+         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
          :unnarrowed t)
         ("o" "outlines" plain (function org-roam-capture--get-point)
          "%?"
          :file-name "outlines/${slug}"
-         :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
+         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
          :unnarrowed t)
         )
       )
@@ -148,6 +163,7 @@
          "%?"
          :file-name "literature/${slug}"
          :head "#+title: ${title}
+Time-stamp: <>
 #+roam_key: ${ref}
 #+roam_tags: website
 
@@ -157,6 +173,7 @@
          "%U ${body}\n"
          :file-name "literature/${slug}"
          :head "#+title: ${title}
+Time-stamp: <>
 #+roam_key: ${ref}
 #+roam_tags: website
 
