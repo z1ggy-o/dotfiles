@@ -143,17 +143,17 @@
          :unnarrowed t)
         ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "literature/${slug}"
+         :file-name "literafure/%<%y%m%d>-${slug}"
          :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
          :unnarrowed t)
         ("c" "concept" plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "concept/${slug}"
+         :file-name "concept/%<%y%m%d>-${slug}"
          :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
          :unnarrowed t)
         ("o" "outlines" plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "outlines/${slug}"
+         :file-name "outlines/%<%y%m%d>-${slug}"
          :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
          :unnarrowed t)
         )
@@ -161,7 +161,7 @@
   (setq org-roam-capture-ref-templates
       '(("r" "ref" plain (function org-roam-capture--get-point)
          "%?"
-         :file-name "literature/${slug}"
+         :file-name "literature/%<%y%m%d>-${slug}"
          :head "#+title: ${title}
 Time-stamp: <>
 #+roam_key: ${ref}
@@ -171,7 +171,7 @@ Time-stamp: <>
          :unnarrowed t)
         ("a" "Annotation" plain (function org-roam-capture--get-point)
          "%U ${body}\n"
-         :file-name "literature/${slug}"
+         :file-name "literature/%<%y%m%d>-${slug}"
          :head "#+title: ${title}
 Time-stamp: <>
 #+roam_key: ${ref}
