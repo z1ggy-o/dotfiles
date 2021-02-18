@@ -434,3 +434,13 @@ See `org-capture-templates' for more information."
                  ;; symlink pointing to the actual location of all-posts.org!
                  (file+olp "blogs/inbox.org" "Blog Ideas")
                  (function org-hugo-new-subtree-post-capture-template))))
+
+;; ORG-DOWNLOAD
+(use-package! org-download
+  :after org
+  :config
+  (setq-default org-download-method 'directory
+                org-download-image-dir "~/.images/"
+                ;; org-download-heading-lvl nil
+                org-image-actual-width 300)
+)
