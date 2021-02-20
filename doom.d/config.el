@@ -84,11 +84,14 @@
 (setq org-directory "~/silverpath/org/"
       org-agenda-files (list "~/silverpath/org/" "\.org")
       org-archive-location (concat org-directory ".archive/%s::")
-      roam_notes "~/silverpath/org-roam-db/"
-      lit_notes "~/silverpath/org-roam-db/literature/"
-      zot_bib "~/silverpath/org-roam-db/zotero.bib"
-      paper_notes "~/silverpath/org-roam-db/paper_notes/"
-      pdf_dir "~/silverpath/papers/")
+
+      roam_notes (concat org-directory "zettelkasten")
+      ;;lit_notes (concat org-directory "~/silverpath/org-roam-db/literature/")
+      ;;zot_bib (concat org-directory "~/silverpath/org-roam-db/zotero.bib")
+      ;;paper_notes (concat org-directory "~/silverpath/org-roam-db/paper_notes/")
+      lit_notes (concat roam_notes "literature/")
+      zot_bib(concat roam_notes "zotero.bib")
+      pdf_dir (concat org-directory "~/silverpath/papers/"))
 
 ;;
 ;; ORG PART
@@ -135,29 +138,29 @@
   :config
   ;; org-roam templates
   (setq org-roam-capture-templates
-      '(
-        ("i" "inbox" plain (function org-roam-capture--get-point)
-         "%?"
-         :file-name "inbox/%<%y%m%d>-${slug}"
-         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::\n- source ::"
-         :unnarrowed t)
-        ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
-         "%?"
-         :file-name "literafure/%<%y%m%d>-${slug}"
-         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
-         :unnarrowed t)
-        ("c" "concept" plain (function org-roam-capture--get-point)
-         "%?"
-         :file-name "concept/%<%y%m%d>-${slug}"
-         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
-         :unnarrowed t)
-        ("o" "outlines" plain (function org-roam-capture--get-point)
-         "%?"
-         :file-name "outlines/%<%y%m%d>-${slug}"
-         :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
-         :unnarrowed t)
+        '(
+          ("i" "inbox" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "inbox/%<%y%m%d>-${slug}"
+           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::\n- source ::"
+           :unnarrowed t)
+          ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "literafure/%<%y%m%d>-${slug}"
+           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
+           :unnarrowed t)
+          ("c" "concept" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "concept/%<%y%m%d>-${slug}"
+           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
+           :unnarrowed t)
+          ("o" "outlines" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "outlines/%<%y%m%d>-${slug}"
+           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags :: "
+           :unnarrowed t)
+          )
         )
-      )
   (setq org-roam-capture-ref-templates
       '(("r" "ref" plain (function org-roam-capture--get-point)
          "%?"
@@ -204,8 +207,80 @@ Time-stamp: <>
   (map! :leader
         (:prefix "n"
          (:prefix "r"
-          :desc "Capture for today" "j" #'org-roam-dailies-capture-today)))
-)
+          :desc "Capture for today" "j" #'org-roam-dailies-capture-today))))
+
+;;
+;; RG-ROAM-BIBTEX PART
+;;
+(use-package! org-roam-bibtex
+  :after (org-roam)
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :config
+  ;; This may let us get the true contents of these keywords from bibtex
+  ;;(setq org-roam-bibtex-preformat-keywords
+  (setq orb-preformat-keywords
+        '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+
+  (setq orb-templates
+        '(
+          ("r" "ref + note" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "paper_notes/${=key=}"
+           :head "#+TITLE: ${=key=}: ${title}
+#+ROAM_KEY: ${ref}
+
+- tags ::
+- keywords :: ${keywords}
+
+* ${title}
+:PROPERTIES:
+:Custom_ID: ${=key=}
+:URL: ${url}
+:AUTHOR: ${author-or-editor}
+:END:
+
+** Short Summary
+
+** What Is the Problem
+
+** Why the Problem Is Interesting
+
+** The Idea
+
+* Reading Notes
+:PROPERTIES:
+:NOTER_DOCUMENT: ${file}
+:NOTER_PAGE:
+:END:"
+
+           :unnarrowed t)
+          ("b" "book" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "outlines/${=key=}"
+           :head "#+TITLE: ${=key=}: ${title}
+#+ROAM_KEY: ${ref}
+
+- tags ::
+- keywords :: ${keywords}
+
+* ${title}
+:PROPERTIES:
+:Custom_ID: ${=key=}
+:URL: ${url}
+:AUTHOR: ${author-or-editor}
+:END:
+
+* Reading Notes
+:PROPERTIES:
+:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
+:NOTER_PAGE:
+:END:"
+
+           :unnarrowed t)
+          ))
+  (define-key org-roam-bibtex-mode-map (kbd "C-c m a") #'orb-note-actions)
+
+  )
 
 ;;
 ;; ORG-REF PART
@@ -289,79 +364,6 @@ Time-stamp: <>
   )
 
 ;;
-;; RG-ROAM-BIBTEX PART
-;;
-(use-package! org-roam-bibtex
-  :after (org-roam)
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :config
-  ;; This may let us get the true contents of these keywords from bibtex
-  ;;(setq org-roam-bibtex-preformat-keywords
-  (setq orb-preformat-keywords
-        '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
-
-  (setq orb-templates
-        '(
-          ("r" "ref + note" plain (function org-roam-capture--get-point)
-           ""
-           :file-name "paper_notes/${=key=}"
-           :head "#+TITLE: ${=key=}: ${title}
-#+ROAM_KEY: ${ref}
-
-- tags ::
-- keywords :: ${keywords}
-
-* ${title}
-:PROPERTIES:
-:Custom_ID: ${=key=}
-:URL: ${url}
-:AUTHOR: ${author-or-editor}
-:END:
-
-** Short Summary
-
-** What Is the Problem
-
-** Why the Problem Is Interesting
-
-** The Idea
-
-* Reading Notes
-:PROPERTIES:
-:NOTER_DOCUMENT: ${file}
-:NOTER_PAGE:
-:END:"
-
-           :unnarrowed t)
-          ("b" "book" plain (function org-roam-capture--get-point)
-           ""
-           :file-name "outlines/${=key=}"
-           :head "#+TITLE: ${=key=}: ${title}
-#+ROAM_KEY: ${ref}
-
-- tags ::
-- keywords :: ${keywords}
-
-* ${title}
-:PROPERTIES:
-:Custom_ID: ${=key=}
-:URL: ${url}
-:AUTHOR: ${author-or-editor}
-:END:
-
-* Reading Notes
-:PROPERTIES:
-:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
-:NOTER_PAGE:
-:END:"
-
-           :unnarrowed t)
-          ))
-  (define-key org-roam-bibtex-mode-map (kbd "C-c m a") #'orb-note-actions)
-
-  )
-
-;;
 ;; ORG-NOTER PART
 ;;
 (use-package! org-noter
@@ -432,7 +434,7 @@ See `org-capture-templates' for more information."
                  ;; It is assumed that below file is present in `org-directory'
                  ;; and that it has a "Blog Ideas" heading. It can even be a
                  ;; symlink pointing to the actual location of all-posts.org!
-                 (file+olp "blogs/inbox.org" "Blog Ideas")
+                 (file+olp "zettelkasten/blogs/articles.org" "New Post")
                  (function org-hugo-new-subtree-post-capture-template))))
 
 ;; ORG-DOWNLOAD
