@@ -85,12 +85,10 @@
       org-agenda-files (list "~/silverpath/org/" "\.org")
       org-archive-location (concat org-directory ".archive/%s::")
 
-      roam_notes (concat org-directory "zettelkasten")
-      ;;lit_notes (concat org-directory "~/silverpath/org-roam-db/literature/")
-      ;;zot_bib (concat org-directory "~/silverpath/org-roam-db/zotero.bib")
-      ;;paper_notes (concat org-directory "~/silverpath/org-roam-db/paper_notes/")
+      roam_notes (concat org-directory "zettelkasten/")
       lit_notes (concat roam_notes "literature/")
       zot_bib(concat roam_notes "zotero.bib")
+      paper_notes (concat roam_notes "paper_notes/")
       pdf_dir (concat org-directory "~/silverpath/papers/"))
 
 ;;
@@ -134,7 +132,8 @@
   (setq org-roam-directory roam_notes
         org-roam-db-location "~/.org-roam.db"  ;; move it out of sync directory
         org-roam-tag-sources '(prop last-directory)
-        org-roam-file-exclude-regexp "daily" )
+        ;;org-roam-file-exclude-regexp "daily"
+        )
   :config
   ;; org-roam templates
   (setq org-roam-capture-templates
