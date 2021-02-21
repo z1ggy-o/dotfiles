@@ -66,15 +66,15 @@
 ;; Use command key as meta in macOS, that means we need to use Alt+C/V to copy/paste
 (cond
  ((string-equal system-type "darwin")
-  (setq mac-option-modifier 'super
-        mac-command-modifier 'meta)
-  )
- )
+  (setq mac-command-modifier 'meta
+        ;;mac-option-modifier 'super)
+        mac-option-modifier 'alt
+        mac-right-option-modifier 'alt)))
 
 ;;
 ;; EVIL PART
 ;;
-(after! evil-snipe (evil-snipe-mode -1))  ;; s for substitution comes back!
+;;(after! evil-snipe (evil-snipe-mode -1))  ;; s for substitution comes back! ;; let's just use =c l=
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -117,6 +117,7 @@
   (setq org-log-done t))
 
 (add-hook 'org-mode-hook #'auto-fill-mode)  ;; enable auto-fill in all org files
+(setq org-export-with-tags nil)  ;; when export org to other format, drop tags away
 
 ;;
 ;; ORG-ROAM PART
@@ -160,6 +161,8 @@
            :unnarrowed t)
           )
         )
+  ;; capture website from browser
+  ;; =+roam_key= is used for "ref backlink"
   (setq org-roam-capture-ref-templates
       '(("r" "ref" plain (function org-roam-capture--get-point)
          "%?"
@@ -437,11 +440,34 @@ See `org-capture-templates' for more information."
                  (function org-hugo-new-subtree-post-capture-template))))
 
 ;; ORG-DOWNLOAD
+
+;; from https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/ and
+;; https://emacs-china.org/t/emacs/15765/9
+;;
+;; This function help us to give a name to the capture before we call org-download-clipboard
+;; to save the file for us.
+;;
+;; ask for the filename before pasting an image
+;; filename should end with ".png/.jpg/.svg"
+(defun zz/org-download-paste-clipboard (&optional use-default-filename)
+  (interactive "P")
+  (require 'org-download)
+  (let ((file
+         (if (not use-default-filename)
+             (read-string (format "Filename [%s]: "
+                                  org-download-screenshot-basename)
+                          nil nil org-download-screenshot-basename)
+           nil)))
+    (org-download-clipboard file)))
+
 (use-package! org-download
   :after org
   :config
   (setq-default org-download-method 'directory
                 org-download-image-dir "~/.images/"
-                ;; org-download-heading-lvl nil
+                org-download-heading-lvl nil
+                org-download-timestamp "%Y%m%d_"
                 org-image-actual-width 300)
+  (map! :map org-mode-map
+        :localleader "ap" #'zz/org-download-paste-clipboard)
 )

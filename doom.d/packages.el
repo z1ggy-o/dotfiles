@@ -59,3 +59,7 @@
 (unpin! bibtex-completion helm-bibtex ivy-bibtex)
 
 (package! org-ref)
+
+;; there is a =dragndrap= flag in org section, however, I want to config this package myself
+;; source :: https://zzamboni.org/post/my-doom-emacs-configuration-with-commentary/ Capturing images part
+(package! org-download)
