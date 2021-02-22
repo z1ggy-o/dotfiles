@@ -146,7 +146,7 @@
            :unnarrowed t)
           ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
            "%?"
-           :file-name "literafure/%<%y%m%d>-${slug}"
+           :file-name "literature/%<%y%m%d>-${slug}"
            :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
            :unnarrowed t)
           ("c" "concept" plain (function org-roam-capture--get-point)
