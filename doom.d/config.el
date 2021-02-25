@@ -67,9 +67,10 @@
 (cond
  ((string-equal system-type "darwin")
   (setq mac-command-modifier 'meta
-        ;;mac-option-modifier 'super)
-        mac-option-modifier 'alt
-        mac-right-option-modifier 'alt)))
+        mac-option-modifier 'super
+        ;;mac-option-modifier 'alt
+        ;;mac-right-option-modifier 'alt
+)))
 
 ;;
 ;; EVIL PART
@@ -147,7 +148,7 @@
           ("l" "literature: book, blog, web..." plain (function org-roam-capture--get-point)
            "%?"
            :file-name "literature/%<%y%m%d>-${slug}"
-           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::"
+           :head "#+title: ${title}\nTime-stamp: <>\n#+roam_alias:\n#+roam_tags:\n\n- tags ::\n- source :: "
            :unnarrowed t)
           ("c" "concept" plain (function org-roam-capture--get-point)
            "%?"
@@ -198,12 +199,12 @@ Time-stamp: <>
            :head "#+title: %<%Y-%m-%d>\n"
            :olp ("Journal"))
 
-          ("k" "knowledge" entry
-           #'org-roam-capture--get-point
-           "* %? [%<%H:%M:%S>]"
-           :file-name "daily/%<%Y-%m-%d>"
-           :head "#+title: %<%Y-%m-%d>\n"
-           :olp ("Knowledge notes"))
+          ;; ("k" "knowledge" entry
+          ;;  #'org-roam-capture--get-point
+          ;;  "* %? [%<%H:%M:%S>]"
+          ;;  :file-name "daily/%<%Y-%m-%d>"
+          ;;  :head "#+title: %<%Y-%m-%d>\n"
+          ;;  :olp ("Knowledge notes"))
           ))
 
   (map! :leader
