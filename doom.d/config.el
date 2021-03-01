@@ -194,7 +194,7 @@ Time-stamp: <>
         '(
           ("j" "journal" entry
            #'org-roam-capture--get-point
-           "* %? [%<%H:%M:%S>]"
+           "* [%<%H:%M:%S>] %?"
            :file-name "daily/%<%Y-%m-%d>"
            :head "#+title: %<%Y-%m-%d>\n"
            :olp ("Journal"))
