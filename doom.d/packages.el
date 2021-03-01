@@ -55,8 +55,11 @@
 ;; When using bibtex-completion via the `biblio` module
 (unpin! bibtex-completion helm-bibtex ivy-bibtex)
 
+;; combine org-roam with helm-bibtex and org-noter
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+;; a better graphic view of org-roam in browser
+(package! org-roam-server)
 
 (package! org-ref)
 
