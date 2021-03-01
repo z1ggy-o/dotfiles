@@ -25,8 +25,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one
-      doom-font (font-spec :family "Sarasa Mono SC" :size 28))
+(setq doom-theme 'doom-gruvbox
+      doom-font (font-spec :family "Sarasa Mono SC" :size 16))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -242,7 +242,15 @@ Time-stamp: <>
 :AUTHOR: ${author-or-editor}
 :END:
 
+** Why
+why I read this paper?
+- background and related work?
+- good writing/learning tempalte
+- good figure
+- good evaluation
+
 ** Short Summary
+As short as possible, may contain links
 
 ** What Is the Problem
 
